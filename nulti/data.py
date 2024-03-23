@@ -38,8 +38,7 @@ class Random2DGaussian:
 def sample_gauss_2d(nclasses, nsamples):
   # create the distributions and groundtruth labels
    """
-  stvara C slučajnih bivarijatnih Gaussovih razdioba 
-  (prisjetimo se, njih smo u zadatku 1 implementirali razredom Random2DGaussian), 
+  stvara C slučajnih bivarijatnih Gaussovih razdioba  
   te iz svake od njih uzorkuje N podataka. 
   Funkcija treba vratiti 
   matricu X dimenzija (N·C)x2 čiji retci odgovaraju uzorkovanim podatcima te 
@@ -60,12 +59,15 @@ def sample_gauss_2d(nclasses, nsamples):
 
 def eval_perf_binary(Y,Y_):
   """
-  Y = Y predicted
-  Y_ = Y true
-  na temelju predviđenih i točnih indeksa razreda određuje pokazatelje performanse binarne klasifikacije: 
-  točnost (engl. accuracy), preciznost (engl. precision) te odziv (engl. recall). 
+    calculates classification metrics for binary logistic regression
 
-  """
+    Arguments:
+    Y -- Y predicted
+    Y_ -- Y true
+
+    Returns:
+    accuracy, recall, precision
+    """
   tp = sum(np.logical_and(Y==Y_, Y_==True))
   fn = sum(np.logical_and(Y!=Y_, Y_==True))
   tn = sum(np.logical_and(Y==Y_, Y_==False))
