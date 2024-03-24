@@ -87,8 +87,8 @@ def eval_AP(ranked_labels):
     Returns:
     Average Precision (AP)
     """
-  n = len(ranked_labels)
-  pos = sum(ranked_labels)
+  n = ranked_labels.shape[0]
+  pos = np.sum(ranked_labels)
   neg = n - pos
   
   tp = pos
@@ -105,8 +105,6 @@ def eval_AP(ranked_labels):
     if x:
       sumprec += precision
       
-    #print (x, tp,tn,fp,fn, precision, recall, sumprec)
-    #IPython.embed()
 
     tp -= x
     fn += x

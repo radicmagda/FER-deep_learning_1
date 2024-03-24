@@ -64,9 +64,10 @@ if __name__=="__main__":
 
     # get the training dataset
     X,Y_ = data.sample_gauss_2d(2, 100)
+    print(f"Y_ shape: {Y_.shape}")
 
     # train the model
-    w,b = binlogreg_train(X, Y_, param_niter=3000,  param_delta=0.05)
+    w,b = binlogreg_train(X, Y_, param_niter=3000,  param_delta=0.1)
 
     # evaluate the model on the training dataset
     probs = binlogreg_classify(X, w,b)
@@ -74,5 +75,6 @@ if __name__=="__main__":
 
     # report performance
     accuracy, recall, precision = data.eval_perf_binary(Y, Y_)
-    AP = data.eval_AP(Y_[probs.argsort()])
+    Y_ranked = Y_[probs.argsort(axis=0)[:, ::-1]].reshape(Y_.shape)
+    AP = data.eval_AP(Y_ranked)
     print (accuracy, recall, precision, AP)
