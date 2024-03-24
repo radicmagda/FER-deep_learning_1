@@ -1,0 +1,2 @@
+- update python docstrings in data.py and binlogreg.py to follow the same convention
+- fix data.graph_2d() dimensions mismatch
