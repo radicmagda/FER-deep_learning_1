@@ -53,7 +53,7 @@ def sample_gauss_2d(nclasses, nsamples):
 
   # sample the dataset
    X = np.vstack([G.get_sample(nsamples) for G in Gs])
-   Y_= np.hstack([[Y]*nsamples for Y in Ys])
+   Y_= np.hstack([[Y]*nsamples for Y in Ys]).reshape(nsamples*nclasses,1)
   
    return X,Y_
 
@@ -79,8 +79,14 @@ def eval_perf_binary(Y,Y_):
 
 def eval_AP(ranked_labels):
   """
-  calculates Average Precision (AP) from ranked labels
-  """
+    Calculates Average Precision (AP) from ranked
+
+    Arguments:
+    ranked_labels -- 
+
+    Returns:
+    Average Precision (AP)
+    """
   n = len(ranked_labels)
   pos = sum(ranked_labels)
   neg = n - pos

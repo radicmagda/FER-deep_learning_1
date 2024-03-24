@@ -4,7 +4,6 @@ import random
 
 import pdb
 import IPython
-
   
 def graph_surface(function, rect, offset=0.5, width=256, height=256):
   """Creates a surface plot (visualize with plt.show)
