@@ -200,18 +200,19 @@ class FC(Layer):
     Returns:
       An ndarray of shape (N, num_outputs)
     """
-    # TODO
-    pass
+    # self.weights - ndarray of shape (num_outputs, num_inputs)
+    # self. bias - ndarray og shape(num_outputs, )
+    return  np.dot(inputs, self.weights.T) + self.bias
 
   def backward_inputs(self, grads):
     """
     Args:
-      grads: ndarray of shape (N, num_outputs)
+      grads: ndarray of shape (N, num_outputs) =grad of Loss of each N points, with respect to each output of the layer
     Returns:
-      An ndarray of shape (N, num_inputs)
+      An ndarray of shape (N, num_inputs) = grad of Loss of each N points, with respect to each input to the layer
     """
-    # TODO
-    pass
+    return np.dot(grads, self.weights)
+
 
   def backward_params(self, grads):
     """
