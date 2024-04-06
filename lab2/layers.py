@@ -193,8 +193,8 @@ class FC(Layer):
     self.name = name
     self.has_params = True
 
-    ### upitno
-    self.latest_inputs=None
+    ### dodano
+    self.inputs=None
 
   def forward(self, inputs):
     """
@@ -240,6 +240,9 @@ class ReLU(Layer):
     self.name = name
     self.has_params = False
 
+    ### dodano
+    self.inputs=None
+
   def forward(self, inputs):
     """
     Args:
@@ -247,8 +250,8 @@ class ReLU(Layer):
     Returns:
       ndarray of shape (N, C, H, W).
     """
-    # TODO
-    pass
+    self.inputs=inputs
+    return np.maximum(0, inputs)
 
   def backward_inputs(self, grads):
     """
@@ -257,8 +260,8 @@ class ReLU(Layer):
     Returns:
       ndarray of shape (N, C, H, W).
     """
-    # TODO
-    pass
+    grad_inputs = np.where(self.inputs > 0, grads, 0)
+    return grad_inputs
 
 
 class SoftmaxCrossEntropyWithLogits():
