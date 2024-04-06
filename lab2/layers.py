@@ -193,6 +193,9 @@ class FC(Layer):
     self.name = name
     self.has_params = True
 
+    ### upitno
+    self.latest_inputs=None
+
   def forward(self, inputs):
     """
     Args:
@@ -202,6 +205,9 @@ class FC(Layer):
     """
     # self.weights - ndarray of shape (num_outputs, num_inputs)
     # self. bias - ndarray og shape(num_outputs, )
+    ### upitno
+    self.inputs=inputs
+
     return  np.dot(inputs, self.weights.T) + self.bias
 
   def backward_inputs(self, grads):
@@ -222,8 +228,8 @@ class FC(Layer):
       List of params and gradient pairs.
     """
     # TODO
-    grad_weights = ...
-    grad_bias = ...
+    grad_weights = np.dot(grads.T, self.inputs)
+    grad_bias = np.sum(grads, axis=0)
     return [[self.weights, grad_weights], [self.bias, grad_bias], self.name]
 
 
