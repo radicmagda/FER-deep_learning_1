@@ -322,20 +322,18 @@ class L2Regularizer():
   def forward(self):
     """
      Returns:
-      Scalar, loss due to the L2 regularization.
+      Scalar, loss due to the L2 regularization. # samo drugi dio gubitka tj regularizacijski dio/izraz=1/2 * lambda*l2 norma težina
     """
-    # TODO
-    pass
+    l2_loss = 0.5 * self.weight_decay * np.sum(np.square(self.weights))
+    return l2_loss
 
   def backward_params(self):
     """
     Returns:
       Gradient of the L2 loss with respect to the regularized weights.
     """
-    # TODO
-    grad_weights = ...
+    grad_weights = self.weight_decay * self.weights
     return [[self.weights, grad_weights], self.name]
-
 
 class RegularizedLoss():
   def __init__(self, data_loss, regularizer_losses):
