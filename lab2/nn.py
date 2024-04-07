@@ -56,7 +56,8 @@ def draw_conv_filters(epoch, step, layer, save_dir):
       c = int(j % cols) * (k + border)
       img[r:r+k,c:c+k] = w[j,i]
     filename = '%s_epoch_%02d_step_%06d_input_%03d.png' % (layer.name, epoch, step, i)
-    ski.io.imsave(os.path.join(save_dir, filename), img)
+    img_uint8=ski.img_as_ubyte(img)
+    ski.io.imsave(os.path.join(save_dir, filename), img_uint8)
 
 
 def train(train_x, train_y, valid_x, valid_y, net, loss, config):

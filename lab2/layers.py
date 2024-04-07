@@ -58,10 +58,10 @@ class Convolution(Layer):
                bias_initializer_fn=zero_init):
     self.input_shape = input_layer.shape
     N, C, H, W = input_layer.shape
-    self.C = C
-    self.N = N
-    self.num_filters = num_filters
-    self.kernel_size = kernel_size
+    self.C = C  #broj kanala - pr. za RGB je 3
+    self.N = N  #broj ulaznih primjera
+    self.num_filters = num_filters   #broj filtara
+    self.kernel_size = kernel_size   #veličina jezgre (jezgra je matrica kernel_size x kernel_size)
 
     assert kernel_size % 2 == 1
 
