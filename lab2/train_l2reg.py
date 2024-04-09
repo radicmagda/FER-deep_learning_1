@@ -6,15 +6,14 @@ from torchvision.datasets import MNIST
 
 import nn
 import layers
-
 DATA_DIR = Path(__file__).parent / 'datasets' / 'MNIST'
-SAVE_DIR = Path(__file__).parent / 'out_l2reg'
+SAVE_DIR = Path(__file__).parent / f'out_l2reg_e-2'
 
 config = {}
 config['max_epochs'] = 8
 config['batch_size'] = 50
 config['save_dir'] = SAVE_DIR
-config['weight_decay'] = 1e-3
+config['weight_decay'] = 1e-2
 config['lr_policy'] = {1:{'lr':1e-1}, 3:{'lr':1e-2}, 5:{'lr':1e-3}, 7:{'lr':1e-4}}
 
 def dense_to_one_hot(y, class_count):

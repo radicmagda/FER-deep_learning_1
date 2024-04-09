@@ -69,7 +69,7 @@ class Convolution(Layer):
     if padding == 'SAME':
       # with zero padding
       self.shape = (N, num_filters, H, W)
-      self.pad = (kernel_size - 1) // 2  
+      self.pad = (kernel_size - 1) // 2
     else:
       # without padding
       self.shape = (N, num_filters, H - kernel_size + 1, W - kernel_size + 1)
@@ -228,7 +228,7 @@ class FC(Layer):
       List of params and gradient pairs.
     """
     # TODO
-    grad_weights = np.dot(grads.T, self.inputs)
+    grad_weights = np.dot(grads.T, self.inputs)  #(num_outputs, N) @  (N, num_inputs) -> (num_outputs, num_inputs)  smjer gradijenta za parametre za taj sloj
     grad_bias = np.sum(grads, axis=0)
     return [[self.weights, grad_weights], [self.bias, grad_bias], self.name]
 
