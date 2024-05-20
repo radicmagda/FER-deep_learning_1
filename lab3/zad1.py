@@ -37,7 +37,7 @@ class NLPDataset(Dataset):
         inst=self.instances[idx]
         text=inst.text
         label=inst.label
-        return self.text_vocab.encode(text), self.
+        return self.text_vocab.encode(text), self.label_vocab.encode(label)
 
 # Instantiate the datasets
 train_dataset = NLPDataset('lab3/data/sst_train_raw.csv')
