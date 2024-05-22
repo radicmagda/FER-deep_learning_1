@@ -6,6 +6,12 @@ import numpy as np
 import os
 from dataclasses import dataclass
 from collections import Counter
+from torch import nn
+
+TRAIN_PATH='lab3/data/sst_train_raw.csv'
+TEST_PATH='lab3/data/sst_test_raw.csv'
+VALID_PATH='lab3/data/sst_valid_raw.csv'
+VECTORS_PATH='lab3/data/ssr_glove_6b_300d.txt'
 
 
 @dataclass
@@ -22,10 +28,16 @@ class Vocab:
         counts = Counter(corpus)
         filtered_counts = {word: count for word, count in counts.items() if count >= min_freq}
         sorted_strings = sorted(filtered_counts.keys(), key=lambda x: (-filtered_counts[x], x))
-        mapping = {string: code for code, string in enumerate(sorted_strings, start=2)}
+        
         if usespecialsigns:
-            mapping['<PAD>'] = 0
-            mapping['<UNK>']= 1
+           mapping = {string: code for code, string in enumerate(sorted_strings, start=2)}
+           spec = {
+                '<PAD>': 0,
+                '<UNK>': 1
+            }
+           mapping = {**spec, **mapping}
+        else:
+            mapping = {string: code for code, string in enumerate(sorted_strings, start=0)}
     
         if max_size >0 and len(mapping) > max_size:
             mapping = dict(list(mapping.items())[:max_size])
@@ -49,7 +61,7 @@ class Vocab:
 class NLPDataset(Dataset):
     def __init__(self, csv_file, text_vocab:Vocab, label_vocab:Vocab):
         data_frame = pd.read_csv(csv_file)
-        self.instances=[Instance(text.split(), label) for text, label in data_frame.values] #lista Instance-ova
+        self.instances=[Instance(text.split(), label.strip()) for text, label in data_frame.values] #lista Instance-ova
 
         self.text_vocab=text_vocab
         self.label_vocab=label_vocab
@@ -64,12 +76,27 @@ class NLPDataset(Dataset):
         text=inst.text
         label=inst.label
         return self.text_vocab.encode(text), self.label_vocab.encode(label)
+    
 
-# Instantiate the datasets
-#text_vocab=Vocab()
-#train_dataset = NLPDataset('lab3/data/sst_train_raw.csv')
-#valid_dataset = NLPDataset('lab3/data/sst_valid_raw.csv')
-#test_dataset = NLPDataset('lab3/data/sst_test_raw.csv')
+def pad_collate_fn(batch, pad_index=0):
+    #ovo je matejevo- promijenii!!- samo vidi logiku
+    print("originalni batch")
+    print(len(batch))
+    print(batch[0])
+    texts = []
+    labels = []
+    for text, label in batch:
+        texts.append(text)
+        labels.append(label)
+
+    original_lengths = [len(text) for text in texts]
+    text_lengths=[]
+    for text in texts:
+        text_lengths.append(len(text))
+    padded_text = nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=pad_index)
+    return padded_text, torch.stack(labels, dim=0), torch.tensor(text_lengths)
+
+
 
 # Create data loaders
 #train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
@@ -77,3 +104,35 @@ class NLPDataset(Dataset):
 #test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
     # Training loop logic here
+
+if __name__=='__main__':
+    #extract all words and labels from TRAIN datatset
+    df = pd.read_csv(TRAIN_PATH)
+    text_corpus = df.iloc[:, :-1].values
+    all_words=[]
+    for text in text_corpus:
+        all_words.extend(text[0].split())
+    all_labels = df.iloc[:, -1].values
+    all_labels=[la.strip() for la in all_labels]
+
+    #intitialize text vocabulary and labels vocabulary, based on TRAIN data
+    text_vocab=Vocab(corpus=all_words)
+    labels_vocab=Vocab(corpus=all_labels, usespecialsigns=False)
+
+    #intialize the NLPDatasets for train test and valid
+    train_dataset = NLPDataset(csv_file=TRAIN_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
+    test_dataset = NLPDataset(csv_file=TEST_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
+    valid_dataset = NLPDataset(csv_file=VALID_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
+
+    #create data loaders
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
+    valid_loader = DataLoader(valid_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
+    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
+
+    texts, labels, lengths = next(iter(train_loader))
+    print(f"Texts shape: {texts.shape}")
+    print(f"Texts: {texts}")
+    print(f"Labels: {labels}")
+    print(f"Lengths: {lengths}")
+
+
