@@ -79,31 +79,16 @@ class NLPDataset(Dataset):
     
 
 def pad_collate_fn(batch, pad_index=0):
-    #ovo je matejevo- promijenii!!- samo vidi logiku
-    print("originalni batch")
-    print(len(batch))
-    print(batch[0])
-    texts = []
-    labels = []
-    for text, label in batch:
-        texts.append(text)
-        labels.append(label)
-
-    original_lengths = [len(text) for text in texts]
-    text_lengths=[]
-    for text in texts:
-        text_lengths.append(len(text))
-    padded_text = nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=pad_index)
-    return padded_text, torch.stack(labels, dim=0), torch.tensor(text_lengths)
+    texts, labels = zip(*batch)  
+    lengths = torch.tensor([len(text) for text in texts])
+    texts = nn.utils.rnn.pad_sequence(sequences=texts, batch_first=True, padding_value=pad_index)  
+    return texts, torch.tensor(labels), lengths
 
 
+def get_embedding_matrix():
+    #finish..
+    print("dkj")
 
-# Create data loaders
-#train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-#valid_loader = DataLoader(valid_dataset, batch_size=32, shuffle=False)
-#test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-    # Training loop logic here
 
 if __name__=='__main__':
     #extract all words and labels from TRAIN datatset
@@ -130,7 +115,6 @@ if __name__=='__main__':
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
 
     texts, labels, lengths = next(iter(train_loader))
-    print(f"Texts shape: {texts.shape}")
     print(f"Texts: {texts}")
     print(f"Labels: {labels}")
     print(f"Lengths: {lengths}")
