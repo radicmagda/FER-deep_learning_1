@@ -20,12 +20,23 @@ class MNISTMetricDataset(Dataset):
 
     def _sample_negative(self, index):
         # YOUR CODE HERE
-       print("dovrsi kod _samlpe_negative") 
+       target=self.targets[index].item()
+       negative_indices=[]
+       t2i=self.target2indices
+       for key in t2i.keys():
+           if key!=target:
+               negative_indices.extend(t2i[key])
+       return choice(negative_indices)
 
 
     def _sample_positive(self, index):
         # YOUR CODE HERE
-        print("dovrsi kod _samlpe_positive")
+        """
+        returns index of a random positive example
+        """
+        target=self.targets[index].item()
+        positive_indices=self.target2indices[target]
+        return choice(positive_indices)
 
 
     def __getitem__(self, index):
@@ -42,3 +53,6 @@ class MNISTMetricDataset(Dataset):
 
     def __len__(self):
         return len(self.images)
+    
+if __name__=="__main__":
+    mnist=MNISTMetricDataset()
