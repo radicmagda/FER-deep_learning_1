@@ -20,10 +20,12 @@ class MNISTMetricDataset(Dataset):
 
     def _sample_negative(self, index):
         # YOUR CODE HERE
+       print("dovrsi kod _samlpe_negative") 
 
 
     def _sample_positive(self, index):
         # YOUR CODE HERE
+        print("dovrsi kod _samlpe_positive")
 
 
     def __getitem__(self, index):
