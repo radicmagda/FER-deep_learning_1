@@ -7,9 +7,9 @@ class _BNReluConv(nn.Sequential):
     def __init__(self, num_maps_in, num_maps_out, k=3, bias=True):
         """
         num_maps_in: number of input channels for the conv layer
-        num_maps_out : number of output channels for the conv layer/ number of filters of the conv layer
+        num_maps_out: number of output channels for the conv layer/ number of filters of the conv layer
         k: kernel size of the conv layer
-        bias : if True, the batch normalization layer will have learnable affine parameters (scale and shift).
+        bias: if True, the batch normalization layer will have learnable affine parameters (scale and shift).
         """
         super(_BNReluConv, self).__init__()
         self.append(torch.nn.BatchNorm2d(num_maps_in, affine=bias))
