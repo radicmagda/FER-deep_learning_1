@@ -1,3 +1,3 @@
-1. in SimpleMetricEmbedding:
+1. in zad2.SimpleMetricEmbedding:
    - remove static field self.global_avg (kernel size=2)
    - create global avg pool dinamically in get_features(), with kernel_size depending on previous layer output size
