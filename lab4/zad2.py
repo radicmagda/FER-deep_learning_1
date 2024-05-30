@@ -24,9 +24,8 @@ class SimpleMetricEmbedding(nn.Module):
         # YOUR CODE HERE
         self.margin = 1
         self.unit_1 = _BNReluConv(input_channels, emb_size, k=3)
-        self.maxpool_1 = torch.nn.MaxPool2d(kernel_size=3, stride=2)
+        self.maxpool = torch.nn.MaxPool2d(kernel_size=3, stride=2)
         self.unit_2 = _BNReluConv(emb_size, emb_size, k=3)
-        self.maxpool_2 = torch.nn.MaxPool2d(kernel_size=3, stride=2)
         self.unit_3 = _BNReluConv(emb_size, emb_size, k=3)
         self.global_avg = nn.AvgPool2d(kernel_size=2)
         
@@ -36,9 +35,9 @@ class SimpleMetricEmbedding(nn.Module):
         # img is tensor of dimenstions BATCH_SIZE, C, H, W -> (B, 1, 28, 28) for MNIST
         # YOUR CODE HERE
         x = self.unit_1(img)
-        x = self.maxpool_1(x)
+        x = self.maxpool(x)
         x = self.unit_2(x)
-        x = self.maxpool_2(x)
+        x = self.maxpool(x)
         x = self.unit_3(x)
         x = self.global_avg(x)
         shape=x.shape #should be (B, EMB_SIZE, 1, 1) after global averaging
