@@ -20,6 +20,9 @@ class MNISTMetricDataset(Dataset):
 
     def _sample_negative(self, index):
         # YOUR CODE HERE
+       """
+       returns index of a random negative example, relative to index
+       """
        target=self.targets[index].item()
        negative_indices=[]
        t2i=self.target2indices
@@ -32,7 +35,7 @@ class MNISTMetricDataset(Dataset):
     def _sample_positive(self, index):
         # YOUR CODE HERE
         """
-        returns index of a random positive example
+        returns index of a random positive example, relative to index
         """
         target=self.targets[index].item()
         positive_indices=self.target2indices[target]
