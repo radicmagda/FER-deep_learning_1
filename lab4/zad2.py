@@ -6,7 +6,7 @@ import torch.nn.functional as F
 class _BNReluConv(nn.Sequential):    
     def __init__(self, num_maps_in, num_maps_out, k=3, bias=True):
         """
-        num_maps_in: number of input channels for the conv layer, also number of input and output channels for the BatchNorm2d layer
+        num_maps_in: number of input channels for the conv layer
         num_maps_out: number of output channels for the conv layer/ number of filters of the conv layer
         k: kernel size of the conv layer
         bias: if True, the batch normalization layer will have learnable affine parameters (scale and shift).
@@ -22,12 +22,13 @@ class SimpleMetricEmbedding(nn.Module):
         super().__init__()
         self.emb_size = emb_size
         # YOUR CODE HERE
-        self.margin = 1
         self.unit_1 = _BNReluConv(input_channels, emb_size, k=3)
-        self.maxpool = torch.nn.MaxPool2d(kernel_size=3, stride=2)
+        self.maxpool_1 = torch.nn.MaxPool2d(kernel_size=3, stride=2)
         self.unit_2 = _BNReluConv(emb_size, emb_size, k=3)
+        self.maxpool_2 = torch.nn.MaxPool2d(kernel_size=3, stride=2)
         self.unit_3 = _BNReluConv(emb_size, emb_size, k=3)
         self.global_avg = nn.AvgPool2d(kernel_size=2)
+        self.margin = 1
         
 
     def get_features(self, img):
@@ -35,13 +36,12 @@ class SimpleMetricEmbedding(nn.Module):
         # img is tensor of dimenstions BATCH_SIZE, C, H, W -> (B, 1, 28, 28) for MNIST
         # YOUR CODE HERE
         x = self.unit_1(img)
-        x = self.maxpool(x)
+        x = self.maxpool_1(x)
         x = self.unit_2(x)
-        x = self.maxpool(x)
+        x = self.maxpool_2(x)
         x = self.unit_3(x)
         x = self.global_avg(x)
-        shape=x.shape #should be (B, EMB_SIZE, 1, 1) after global averaging
-        x = x.reshape((shape[0], shape[1])) #reshaped to (B, EMB_SIZE)
+        x=x.squeeze() #from (B, EMB_SIZE, 1, 1) to (B, EMB_SIZE)
         return x
 
     def loss(self, anchor, positive, negative):
