@@ -4,7 +4,7 @@ from collections import defaultdict
 PRINT_LOSS_N = 100
 
 
-def train(model, optimizer, loader, device='cuda'):
+def train(model, optimizer, loader, save_path, device='cuda'):
     losses = []
     model.train()
     for i, data in enumerate(loader):   #i je redbi broj batcha, data je batch
@@ -16,6 +16,9 @@ def train(model, optimizer, loader, device='cuda'):
         losses.append(loss.cpu().item())
         if i % PRINT_LOSS_N == 0:
             print(f"Iter: {i}, Mean Loss: {np.mean(losses):.3f}")
+
+     # Save the model's parameters
+    torch.save(model.state_dict(), save_path)
     return np.mean(losses)
 
 

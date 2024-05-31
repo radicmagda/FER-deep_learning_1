@@ -4,6 +4,7 @@ from dataset import MNISTMetricDataset
 from torch.utils.data import DataLoader
 from model import SimpleMetricEmbedding
 from utils import train, evaluate, compute_representations
+import os
 
 EVAL_ON_TEST = True
 EVAL_ON_TRAIN = False
@@ -57,7 +58,7 @@ if __name__ == '__main__':
     )
 
     epochs = 3
-
+    print(os.getcwd())
     for epoch in range(epochs):
         print(f"Epoch: {epoch}")
         t0 = time.time_ns()
