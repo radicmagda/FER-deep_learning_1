@@ -1,2 +1,3 @@
-- loss in SimpleMetricEmbedding
+- loss in SimpleMetricEmbedding DONE
 - does SimpleMetricEmbeddng need margin hyperparameter?
+- 4.zad visualisation
