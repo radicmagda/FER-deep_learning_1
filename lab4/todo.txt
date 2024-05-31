@@ -1,3 +1,4 @@
-- loss in SimpleMetricEmbedding DONE
+- [loss in SimpleMetricEmbedding] DONE
 - does SimpleMetricEmbeddng need margin hyperparameter?
 - 4.zad visualisation
+- rerun all training and testing and save logs to output.txt file
