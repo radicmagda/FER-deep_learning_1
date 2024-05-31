@@ -4,7 +4,6 @@ from dataset import MNISTMetricDataset
 from torch.utils.data import DataLoader
 from model import SimpleMetricEmbedding
 from utils import train, evaluate, compute_representations
-import os
 
 EVAL_ON_TEST = True
 EVAL_ON_TRAIN = False
@@ -16,7 +15,8 @@ if __name__ == '__main__':
 
     # CHANGE ACCORDING TO YOUR PREFERENCE
     mnist_download_root = "./mnist/"
-    ds_train = MNISTMetricDataset(mnist_download_root, split='train')
+    ds_train = MNISTMetricDataset(mnist_download_root, split='train')  # za računanje prosječne reprezentacije
+    ds_train_wo0 = MNISTMetricDataset(mnist_download_root, split='train',remove_class=0) #za treniranje
     ds_test = MNISTMetricDataset(mnist_download_root, split='test')
     ds_traineval = MNISTMetricDataset(mnist_download_root, split='traineval')
 
@@ -27,6 +27,15 @@ if __name__ == '__main__':
 
     train_loader = DataLoader(
         ds_train,
+        batch_size=64,
+        shuffle=True,
+        pin_memory=True,
+        num_workers=4,
+        drop_last=True
+    )
+
+    train_wo0_loader = DataLoader(
+        ds_train_wo0,
         batch_size=64,
         shuffle=True,
         pin_memory=True,
@@ -58,11 +67,10 @@ if __name__ == '__main__':
     )
 
     epochs = 3
-    print(os.getcwd())
     for epoch in range(epochs):
         print(f"Epoch: {epoch}")
         t0 = time.time_ns()
-        train_loss = train(model, optimizer, train_loader, save_path=f"lab4/checkpoints/epoch_{epoch}_params.pth", device=device)
+        train_loss = train(model, optimizer, train_wo0_loader, save_path=f"lab4/checkpoints_wo0/epoch_{epoch}_params.pth", device=device)
         print(f"Mean Loss in Epoch {epoch}: {train_loss:.3f}")
         if EVAL_ON_TEST or EVAL_ON_TRAIN:
             print("Computing mean representations for evaluation...")
