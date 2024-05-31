@@ -5,7 +5,7 @@ import torchvision
 
 
 class MNISTMetricDataset(Dataset):
-    def __init__(self, root="/tmp/mnist/", split='train'):
+    def __init__(self, root="/tmp/mnist/", split='train',remove_class=None):
         super().__init__()
         assert split in ['train', 'test', 'traineval']
         self.root = root
@@ -13,6 +13,13 @@ class MNISTMetricDataset(Dataset):
         mnist_ds = torchvision.datasets.MNIST(self.root, train='train' in split, download=True)
         self.images, self.targets = mnist_ds.data.float() / 255., mnist_ds.targets
         self.classes = list(range(10))
+
+        if remove_class is not None:
+            # Filter out images with target class equal to remove_class
+            # YOUR CODE HERE
+            mask = self.targets != remove_class
+            self.images = self.images[mask]
+            self.targets = self.targets[mask]
 
         self.target2indices = defaultdict(list)
         for i in range(len(self.images)):
