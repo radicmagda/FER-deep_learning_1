@@ -7,7 +7,7 @@ PRINT_LOSS_N = 100
 def train(model, optimizer, loader, device='cuda'):
     losses = []
     model.train()
-    for i, data in enumerate(loader):
+    for i, data in enumerate(loader):   #i je redbi broj batcha, data je batch
         anchor, positive, negative, _ = data
         optimizer.zero_grad()
         loss = model.loss(anchor.to(device), positive.to(device), negative.to(device))
@@ -20,6 +20,9 @@ def train(model, optimizer, loader, device='cuda'):
 
 
 def compute_representations(model, loader, identities_count, emb_size=32, device='cuda'):
+    """
+     computes and returns the average embeddings for each class (identity) in the dataset.
+    """
     model.eval()
     representations = defaultdict(list)
     for i, data in enumerate(loader):
@@ -37,10 +40,16 @@ def compute_representations(model, loader, identities_count, emb_size=32, device
 
 
 def make_predictions(representations, r):
+    """
+     Returns a tensor of distances, where each value corresponds to the distance from r to a class representation in representations.
+    """
     return ((representations - r)**2).sum(1) # predictions based on L2 distance
 
 
 def evaluate(model, repr, loader, device):
+    """
+    returns accuracy on the loader
+    """
     model.eval()
     total = 0
     correct = 0
