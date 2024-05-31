@@ -32,8 +32,10 @@ class SimpleMetricEmbedding(nn.Module):
         
 
     def get_features(self, img):
-        # Returns tensor with dimensions BATCH_SIZE, EMB_SIZE
-        # img is tensor of dimenstions BATCH_SIZE, C, H, W -> (B, 1, 28, 28) for MNIST
+        """
+            Returns tensor with dimensions BATCH_SIZE, EMB_SIZE,
+            img is tensor of dimenstions BATCH_SIZE, C, H, W -> (B, 1, 28, 28) for MNIST
+        """ 
         # YOUR CODE HERE
         x = self.unit_1(img)
         x = self.maxpool_1(x)
@@ -41,13 +43,17 @@ class SimpleMetricEmbedding(nn.Module):
         x = self.maxpool_2(x)
         x = self.unit_3(x)
         x = self.global_avg(x)
-        x=x.squeeze() #from (B, EMB_SIZE, 1, 1) to (B, EMB_SIZE)
+        shape=x.shape # should be (B, EMB_SIZE, 1, 1) after global avg
+        x=x.reshape(shape[0], shape[1]) #reshape to (B, EMB_SIZE)
         return x
 
     def loss(self, anchor, positive, negative):
-        a_x = self.get_features(anchor)
-        p_x = self.get_features(positive)
-        n_x = self.get_features(negative)
-        # YOUR CODE HERE
-        loss = ...
+        a_x = self.get_features(anchor)  # (B,E)
+        p_x = self.get_features(positive) # (B,E)
+        n_x = self.get_features(negative) # (B,E)
+        # YOUR CODE HERE 
+        distance_ap = torch.norm(a_x - p_x, p=2, dim=1)  # Distance between anchor and positive
+        distance_an = torch.norm(a_x - n_x, p=2, dim=1)  # Distance between anchor and negative
+        loss = torch.clamp(distance_ap - distance_an + self.margin, min=0.0)
+        loss=loss.mean()
         return loss
