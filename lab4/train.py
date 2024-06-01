@@ -4,12 +4,16 @@ from dataset import MNISTMetricDataset
 from torch.utils.data import DataLoader
 from model import SimpleMetricEmbedding
 from utils import train, evaluate, compute_representations
+import sys
 
 EVAL_ON_TEST = True
 EVAL_ON_TRAIN = False
 
 
 if __name__ == '__main__':
+    sys.stdout = open('lab4/output.txt', 'a')
+    print("------------in script train.py--------------------------")
+
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"= Using device {device}")
 
@@ -76,3 +80,5 @@ if __name__ == '__main__':
             print(f"Epoch {epoch}: Test Accuracy: {acc1 * 100:.2f}%")
         t1 = time.time_ns()
         print(f"Epoch time (sec): {(t1-t0)/10**9:.1f}")
+    
+    sys.stdout.close()

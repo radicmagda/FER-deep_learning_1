@@ -1,4 +1,4 @@
-- [loss in SimpleMetricEmbedding] DONE
-- does SimpleMetricEmbeddng need margin hyperparameter?
-- 4.zad visualisation
-- rerun all training and testing and save logs to output.txt file
+- DONE [loss in SimpleMetricEmbedding] 
+- does SimpleMetricEmbedding need margin hyperparameter?
+- 4.zad visualisation- add labels/legend to graphs
+- DONE [rerun all training and testing and save logs to output.txt file, rerun graphs] 
