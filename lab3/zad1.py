@@ -135,8 +135,8 @@ if __name__=='__main__':
     test_dataset = NLPDataset(csv_file=TEST_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
     valid_dataset = NLPDataset(csv_file=VALID_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
 
-    #create data loaders
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
+    #create data loaders- shuffle=True for train loader, False otherwise
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, collate_fn=pad_collate_fn)
     valid_loader = DataLoader(valid_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
     
