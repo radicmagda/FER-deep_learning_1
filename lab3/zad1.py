@@ -23,14 +23,17 @@ class Vocab:
     def __init__(self, corpus, max_size=-1, min_freq=0, usespecialsigns=True):
         """
         corpus: iterable of strings
-        sets self.itos and self,stoid
+        sets self.itos and self.stoi -> dictionaryji koji mappaju tokene u indekse i obrnuto, tokeni poredani po učestalosti. češći tokeni imaju niže indekse..
+        ako usespecialsigns, dodaje <PAD>:0 i <UNK>:1 u dictove
+        min_freq: minimalna frekvencija tokena da bi bio ukljucen u dict
+        max_size: maksimalna veličina dicta
         """
-        counts = Counter(corpus)
-        filtered_counts = {word: count for word, count in counts.items() if count >= min_freq}
-        sorted_strings = sorted(filtered_counts.keys(), key=lambda x: (-filtered_counts[x], x))
+        counts = Counter(corpus)                 #izbroji frekvencije
+        filtered_counts = {word: count for word, count in counts.items() if count >= min_freq}  #izbaci riječi s frekvencijama manjim od min_freq
+        sorted_strings = sorted(filtered_counts.keys(), key=lambda x: (-filtered_counts[x], x)) # soritaj silazno s frekvencijom
         
-        if usespecialsigns:
-           mapping = {string: code for code, string in enumerate(sorted_strings, start=2)}
+        if usespecialsigns:                                                                     #dodaj posebne znakove , ako usespecialsigns=True
+           mapping = {string: code for code, string in enumerate(sorted_strings, start=2)}          
            spec = {
                 '<PAD>': 0,
                 '<UNK>': 1
