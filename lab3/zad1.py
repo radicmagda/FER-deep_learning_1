@@ -51,6 +51,9 @@ class Vocab:
 
 
     def encode(self, source):
+        """
+        enkodiranje source-a: string ilii lista stringova u tenzor indekasa
+        """
         if isinstance(source, list):
             cleaned = [s if s in self.stoi.keys() else '<UNK>' for s in source]
             arr=[self.stoi[c] for c in cleaned]
