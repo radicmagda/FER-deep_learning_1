@@ -110,7 +110,7 @@ if __name__=='__main__':
     text_vocab=Vocab(corpus=all_words)
     labels_vocab=Vocab(corpus=all_labels, usespecialsigns=False)
 
-    #intialize the NLPDatasets for train test and valid
+    #intialize the NLPDatasets for train test and valid, with vocab based on TRAIN !!!
     train_dataset = NLPDataset(csv_file=TRAIN_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
     test_dataset = NLPDataset(csv_file=TEST_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
     valid_dataset = NLPDataset(csv_file=VALID_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
@@ -119,10 +119,17 @@ if __name__=='__main__':
     train_loader = DataLoader(train_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
     valid_loader = DataLoader(valid_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
-
-    texts, labels, lengths = next(iter(train_loader))
+    
+    iterator=iter(train_loader)
+    texts, labels, lengths = next(iterator)
     print(f"Texts: {texts}")
     print(f"Labels: {labels}")
     print(f"Lengths: {lengths}")
+
+    texts, labels, lengths = next(iterator)
+    print(f"Texts: {texts}")
+    print(f"Labels: {labels}")
+    print(f"Lengths: {lengths}")
+
 
 
