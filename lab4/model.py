@@ -52,8 +52,8 @@ class SimpleMetricEmbedding(nn.Module):
         p_x = self.get_features(positive) # (B,E)
         n_x = self.get_features(negative) # (B,E)
         # YOUR CODE HERE 
-        distance_ap = torch.norm(a_x - p_x, p=2, dim=1)  # Distance between anchor and positive
-        distance_an = torch.norm(a_x - n_x, p=2, dim=1)  # Distance between anchor and negative
-        loss = torch.clamp(distance_ap - distance_an + self.margin, min=0.0)
-        loss=loss.mean()
+        distance_ap = torch.norm(a_x - p_x, p=2, dim=1) # (B,)Distance between anchor and positive
+        distance_an = torch.norm(a_x - n_x, p=2, dim=1)  # (B,) Distance between anchor and negative
+        loss = torch.clamp(distance_ap - distance_an + self.margin, min=0.0) #(B,)
+        loss=loss.mean() #prosjek po B-u, skalar
         return loss
