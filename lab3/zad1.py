@@ -52,7 +52,7 @@ class Vocab:
 
     def encode(self, source):
         """
-        enkodiranje source-a: string ilii lista stringova u tenzor indekasa
+        enkodiranje source-a: string ili lista stringova u tenzor indeksa/indekasa
         """
         if isinstance(source, list):
             cleaned = [s if s in self.stoi.keys() else '<UNK>' for s in source]
@@ -91,10 +91,30 @@ def pad_collate_fn(batch, pad_index=0):
     return texts, torch.tensor(labels), lengths
 
 
-def get_embedding_matrix():
-    #finish..
-    print("dkj")
+def get_embedding_matrix(vocab:Vocab, random_init=False):
+    """
+    
+    """
+    length=len(vocab.stoi)
+    dim=300
+    matrix=torch.randn((length, dim))    # inicijalizacija iz N(0,1)
+    matrix[0]=0                           # pad token (indeks 0) mora imati nul-vektor za reprezentaciju
+    stoi=vocab.stoi
 
+    if not random_init:                   # pročitaj iz datoteke
+        with open('lab3/data/sst_glove_6b_300d.txt', 'r') as f:
+            for line in f:
+                parts = line.split()
+                token = parts[0]
+                vector = torch.tensor([float(x) for x in parts[1:]])
+
+                if token in stoi:
+                    index = stoi[token]
+                    matrix[index] = vector
+    
+    embedding=nn.Embedding.from_pretrained(embeddings=matrix, freeze=not random_init, padding_idx=0)
+    return embedding
+    
 
 if __name__=='__main__':
     #extract all words and labels from TRAIN datatset
@@ -121,11 +141,14 @@ if __name__=='__main__':
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, collate_fn=pad_collate_fn)
     
     iterator=iter(train_loader)
+
+    print('Prvi batch:')
     texts, labels, lengths = next(iterator)
     print(f"Texts: {texts}")
     print(f"Labels: {labels}")
     print(f"Lengths: {lengths}")
 
+    print('Drugi batch:')
     texts, labels, lengths = next(iterator)
     print(f"Texts: {texts}")
     print(f"Labels: {labels}")
