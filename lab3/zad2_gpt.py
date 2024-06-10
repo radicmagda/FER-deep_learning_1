@@ -1,37 +1,20 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, Dataset
+from zad1 import Instance, Vocab, NLPDataset, pad_collate_fn, get_embedding_matrix
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 import numpy as np
 
-class CustomDataset(Dataset):
-    def __init__(self, texts, labels):
-        self.texts = texts
-        self.labels = labels
-
-    def __len__(self):
-        return len(self.texts)
-
-    def __getitem__(self, idx):
-        return self.texts[idx], self.labels[idx]
-
-def collate_fn(batch, pad_index=0):
-    texts, labels = zip(*batch)
-    text_lengths = [len(text) for text in texts]
-    padded_texts = nn.utils.rnn.pad_sequence(texts, batch_first=True, padding_value=pad_index)
-    return padded_texts, torch.stack(labels), torch.tensor(text_lengths)
-
-class SimpleNNModel(nn.Module):
+class BaselineModel(nn.Module):
     def __init__(self, input_size):
-        super(SimpleNNModel, self).__init__()
+        super(BaselineModel, self).__init__()
         self.fc1 = nn.Linear(input_size, 150)
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(150, 150)
         self.fc3 = nn.Linear(150, 1)
 
     def forward(self, x):
-        x = x.mean(dim=1)  # Mean pooling over the time dimension
+        x = x.mean(dim=1)  # Mean pooling over the second axis
         x = self.fc1(x)
         x = self.relu(x)
         x = self.fc2(x)

@@ -112,9 +112,38 @@ def get_embedding_matrix(vocab:Vocab, random_init=False):
                     index = stoi[token]
                     matrix[index] = vector
     
-    embedding=nn.Embedding.from_pretrained(embeddings=matrix, freeze=not random_init, padding_idx=0)
-    return embedding
+    return matrix
     
+
+def get_data_loaders_and_emb_mat(b_size_train, b_size_valid, b_size_test, random_init=False):
+
+    df = pd.read_csv(TRAIN_PATH)
+    text_corpus = df.iloc[:, :-1].values
+    all_words=[]
+    for text in text_corpus:
+        all_words.extend(text[0].split())
+    all_labels = df.iloc[:, -1].values
+    all_labels=[la.strip() for la in all_labels]
+
+    #intitialize text vocabulary and labels vocabulary, based on TRAIN data
+    text_vocab=Vocab(corpus=all_words)
+    labels_vocab=Vocab(corpus=all_labels, usespecialsigns=False)
+
+    #intialize the NLPDatasets for train test and valid, with vocab based on TRAIN !!!
+    train_dataset = NLPDataset(csv_file=TRAIN_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
+    test_dataset = NLPDataset(csv_file=TEST_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
+    valid_dataset = NLPDataset(csv_file=VALID_PATH, text_vocab=text_vocab, label_vocab=labels_vocab)
+
+    #create data loaders- shuffle=True for train loader, False otherwise
+    train_loader = DataLoader(train_dataset, batch_size=b_size_train, shuffle=True, collate_fn=pad_collate_fn)
+    valid_loader = DataLoader(valid_dataset, batch_size=b_size_valid, shuffle=False, collate_fn=pad_collate_fn)
+    test_loader = DataLoader(test_dataset, batch_size=b_size_test, shuffle=False, collate_fn=pad_collate_fn)
+
+    #get embedding_matrix using text vocab
+    embedding_matrix=get_embedding_matrix(text_vocab, random_init=random_init)
+
+    return train_loader, valid_loader, test_loader, embedding_matrix
+
 
 if __name__=='__main__':
     #extract all words and labels from TRAIN datatset
