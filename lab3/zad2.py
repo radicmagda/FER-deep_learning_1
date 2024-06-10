@@ -3,9 +3,17 @@ import numpy as np
 from torch import nn
 import torch.nn.functional as F
 from zad1 import get_data_loaders_and_emb_mat
-from collections import namedtuple
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+import os
 
-Args = namedtuple('Args', ['seed', 'epochs', 'batch_size', 'lr', 'clip', 'log_interval'])
+class Args:
+    def __init__(self, seed, epochs, batch_size, lr, clip, log_interval):
+        self.seed = seed
+        self.epochs = epochs
+        self.batch_size = batch_size
+        self.lr = lr
+        self.clip = clip
+        self.log_interval = log_interval
 
 class BaselineModel(nn.Module):
     def __init__(self, embedding_matrix, freeze=True, padding_idx=0):
@@ -64,24 +72,27 @@ def train(model, data, optimizer, criterion, args):
 def evaluate(model, data, criterion, args):
     model.eval()
     total_loss = 0
-    correct = 0
-    total = 0
+    all_logits = []
+    all_labels = []
     with torch.no_grad():
-        for batch_num, batch in enumerate(data):
-            data_batch, labels_batch, lengths_batch = batch
-            labels_batch = labels_batch.float()  # convert labels to float so its compattible with logits
+        for data_batch, labels_batch, lengths_batch in data:
+            labels_batch=labels_batch.float()
             logits = model(data_batch, lengths_batch)
-            loss = criterion(logits, labels_batch)
-
+            loss = criterion(logits, labels_batch.float())
             total_loss += loss.item()
-            preds = torch.round(torch.sigmoid(logits))
-            correct += (preds == labels_batch).sum().item()
-            total += labels_batch.size(0)
+            all_logits.append(logits)
+            all_labels.append(labels_batch)
+    avg_loss = total_loss / len(data)
+    all_logits = torch.cat(all_logits).cpu()
+    all_labels = torch.cat(all_labels).cpu()
+    predictions = torch.round(torch.sigmoid(all_logits))
+    accuracy = accuracy_score(all_labels, predictions)
+    f1 = f1_score(all_labels, predictions)
+    cm = confusion_matrix(all_labels, predictions)
+    return avg_loss, accuracy, f1, cm
 
-    accuracy = correct / total
-    return total_loss / len(data), accuracy
-
-def main(args):
+def main(args, run):
+  print(f'\n------------Run: {run+1}')
   np.random.seed(args.seed)
   torch.manual_seed(args.seed)
 
@@ -94,18 +105,32 @@ def main(args):
   criterion = nn.BCEWithLogitsLoss()
   optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
-
-  # Training loop
-  for epoch in range(args.epochs):
-      train_loss = train(model, train_loader, optimizer, criterion, args)
-      valid_loss, valid_accuracy = evaluate(model, valid_loader, criterion, args)
-      print(f'Epoch {epoch + 1}/{args.epochs}, Train Loss: {train_loss}, Valid Loss: {valid_loss}, Valid Accuracy: {valid_accuracy}')
-
-    # Test evaluation
-  test_loss, test_accuracy = evaluate(model, test_loader, criterion, args)
+  with open('results.txt', 'a') as f:
+        f.write(f'Run {run + 1} with Seed {args.seed}\n')
+        for epoch in range(args.epochs):
+            train_loss = train(model, train_loader, optimizer, criterion, args)
+            valid_loss, valid_accuracy, valid_f1, valid_cm = evaluate(model, valid_loader, criterion, args)
+            print(f'Epoch {epoch + 1}, Train Loss: {train_loss}, Valid Loss: {valid_loss}, Valid Accuracy: {valid_accuracy}')
+            f.write(f'Epoch {epoch + 1}') 
+            f.write(f'Train Loss: {train_loss}, Valid Loss: {valid_loss}, Valid Accuracy: {valid_accuracy}, Valid F1: {valid_f1}\n')
+            f.write(f'ValidConfusion Matrix:\n{valid_cm}\n\n')
+    
+    # final evaluation on test set
+  test_loss, test_accuracy, test_f1, test_cm = evaluate(model, test_loader, criterion, args)
   print(f'Test Loss: {test_loss}, Test Accuracy: {test_accuracy}')
+  return test_accuracy, test_f1, test_cm
 
 if __name__=="__main__":
-    args = Args(seed=42, epochs=5, batch_size=32, lr=1e-4, clip=1.0, log_interval=100)
-    main(args)
+    results = []
+    for run in range(5):
+        args = Args(seed=7052020+run, epochs=5, batch_size=32, lr=1e-4, clip=1.0, log_interval=100)
+        accuracy, f1, cm = main(args, run)
+        results.append((args.seed, accuracy, f1, cm))
+
+    # Save final test results to file
+    with open('results.txt', 'a') as f:
+        f.write('Final Test Results:\n')
+        for seed, accuracy, f1, cm in results:
+            f.write(f'Seed: {seed}, Accuracy: {accuracy}, F1: {f1}, Confusion Matrix: \n{cm}\n\n')
+        f.write(f'Arguments: {vars(args)}\n')
     
