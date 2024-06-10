@@ -1,0 +1,177 @@
+Run 1 with Seed 7052020
+Epoch 1
+Train Loss: 0.621307562799812, Valid Loss: 0.5537185569604238, Valid Accuracy: 0.7087912087912088, Valid F1: 0.6553966189856958
+ValidConfusion Matrix:
+[[786 122]
+ [408 504]]
+
+Epoch 2
+Train Loss: 0.4805263061442472, Valid Loss: 0.5191388496181422, Valid Accuracy: 0.7285714285714285, Valid F1: 0.6666666666666667
+ValidConfusion Matrix:
+[[832  76]
+ [418 494]]
+
+Epoch 3
+Train Loss: 0.4498705003690513, Valid Loss: 0.47016180973303945, Valid Accuracy: 0.756043956043956, Valid F1: 0.7334933973589436
+ValidConfusion Matrix:
+[[765 143]
+ [301 611]]
+
+Epoch 4
+Train Loss: 0.44009715979757336, Valid Loss: 0.4683685056995927, Valid Accuracy: 0.7648351648351648, Valid F1: 0.7371007371007372
+ValidConfusion Matrix:
+[[792 116]
+ [312 600]]
+
+Epoch 5
+Train Loss: 0.4299874901125541, Valid Loss: 0.45964813781412023, Valid Accuracy: 0.7802197802197802, Valid F1: 0.758745476477684
+ValidConfusion Matrix:
+[[791 117]
+ [283 629]]
+
+Run 2 with Seed 7052021
+Epoch 1
+Train Loss: 0.6278670523208001, Valid Loss: 0.5266714247695187, Valid Accuracy: 0.737912087912088, Valid F1: 0.7071823204419889
+ValidConfusion Matrix:
+[[767 141]
+ [336 576]]
+
+Epoch 2
+Train Loss: 0.4797083643302752, Valid Loss: 0.5279281573337421, Valid Accuracy: 0.7214285714285714, Valid F1: 0.6671043992120814
+ValidConfusion Matrix:
+[[805 103]
+ [404 508]]
+
+Epoch 3
+Train Loss: 0.45075348287691613, Valid Loss: 0.5596755701198912, Valid Accuracy: 0.7082417582417583, Valid F1: 0.6481113320079522
+ValidConfusion Matrix:
+[[800 108]
+ [423 489]]
+
+Epoch 4
+Train Loss: 0.43790179711761157, Valid Loss: 0.5713285636483577, Valid Accuracy: 0.7071428571428572, Valid F1: 0.6481848184818482
+ValidConfusion Matrix:
+[[796 112]
+ [421 491]]
+
+Epoch 5
+Train Loss: 0.4307330319647155, Valid Loss: 0.5600547463747493, Valid Accuracy: 0.7137362637362638, Valid F1: 0.6753894080996884
+ValidConfusion Matrix:
+[[757 151]
+ [370 542]]
+
+Run 3 with Seed 7052022
+Epoch 1
+Train Loss: 0.6239165723582224, Valid Loss: 0.7434881844541483, Valid Accuracy: 0.6302197802197802, Valid F1: 0.4679841897233202
+ValidConfusion Matrix:
+[[851  57]
+ [616 296]]
+
+Epoch 2
+Train Loss: 0.4799101738356097, Valid Loss: 0.8558982690436798, Valid Accuracy: 0.6467032967032967, Valid F1: 0.5226429101707498
+ValidConfusion Matrix:
+[[825  83]
+ [560 352]]
+
+Epoch 3
+Train Loss: 0.4471657007200525, Valid Loss: 0.9294242921628451, Valid Accuracy: 0.65, Valid F1: 0.5133689839572192
+ValidConfusion Matrix:
+[[847  61]
+ [576 336]]
+
+Epoch 4
+Train Loss: 0.43603316689114696, Valid Loss: 0.9291250960607278, Valid Accuracy: 0.6510989010989011, Valid F1: 0.5229151014274981
+ValidConfusion Matrix:
+[[837  71]
+ [564 348]]
+
+Epoch 5
+Train Loss: 0.42766937954792744, Valid Loss: 0.8902276411913989, Valid Accuracy: 0.6604395604395604, Valid F1: 0.5515239477503628
+ValidConfusion Matrix:
+[[822  86]
+ [532 380]]
+
+Run 4 with Seed 7052023
+Epoch 1
+Train Loss: 0.6224364313173156, Valid Loss: 0.5341426013854512, Valid Accuracy: 0.721978021978022, Valid F1: 0.6789340101522843
+ValidConfusion Matrix:
+[[779 129]
+ [377 535]]
+
+Epoch 2
+Train Loss: 0.4778000849562918, Valid Loss: 0.47789651260041355, Valid Accuracy: 0.7565934065934066, Valid F1: 0.7352062163777644
+ValidConfusion Matrix:
+[[762 146]
+ [297 615]]
+
+Epoch 3
+Train Loss: 0.44791014236263454, Valid Loss: 0.4767898888441554, Valid Accuracy: 0.7615384615384615, Valid F1: 0.7246192893401016
+ValidConfusion Matrix:
+[[815  93]
+ [341 571]]
+
+Epoch 4
+Train Loss: 0.436993202173038, Valid Loss: 0.4502851800960407, Valid Accuracy: 0.7846153846153846, Valid F1: 0.7749712973593571
+ValidConfusion Matrix:
+[[753 155]
+ [237 675]]
+
+Epoch 5
+Train Loss: 0.42971396792916894, Valid Loss: 0.46206282000792653, Valid Accuracy: 0.7725274725274726, Valid F1: 0.7463235294117647
+ValidConfusion Matrix:
+[[797 111]
+ [303 609]]
+
+Run 5 with Seed 7052024
+Epoch 1
+Train Loss: 0.6227199064858387, Valid Loss: 0.5107950223119635, Valid Accuracy: 0.7703296703296704, Valid F1: 0.7662192393736018
+ValidConfusion Matrix:
+[[717 191]
+ [227 685]]
+
+Epoch 2
+Train Loss: 0.47767804442458073, Valid Loss: 0.4559744172974637, Valid Accuracy: 0.782967032967033, Valid F1: 0.7911158117398203
+ValidConfusion Matrix:
+[[677 231]
+ [164 748]]
+
+Epoch 3
+Train Loss: 0.4471229676135703, Valid Loss: 0.44818890460750516, Valid Accuracy: 0.7857142857142857, Valid F1: 0.7966631908237748
+ValidConfusion Matrix:
+[[666 242]
+ [148 764]]
+
+Epoch 4
+Train Loss: 0.4353532847124717, Valid Loss: 0.45155085283413265, Valid Accuracy: 0.7862637362637362, Valid F1: 0.7887017925040739
+ValidConfusion Matrix:
+[[705 203]
+ [186 726]]
+
+Epoch 5
+Train Loss: 0.4281281588351451, Valid Loss: 0.46659597754478455, Valid Accuracy: 0.7670329670329671, Valid F1: 0.7875751503006012
+ValidConfusion Matrix:
+[[610 298]
+ [126 786]]
+
+Final Test Results:
+Seed: 7052020, Accuracy: 0.764638346727899, F1: 0.7401774397972116, Confusion Matrix: 
+[[374  69]
+ [136 292]]
+
+Seed: 7052021, Accuracy: 0.7141216991963261, F1: 0.6736566186107471, Confusion Matrix: 
+[[365  78]
+ [171 257]]
+
+Seed: 7052022, Accuracy: 0.6670493685419059, F1: 0.5606060606060607, Confusion Matrix: 
+[[396  47]
+ [243 185]]
+
+Seed: 7052023, Accuracy: 0.7600459242250287, F1: 0.7296248382923675, Confusion Matrix: 
+[[380  63]
+ [146 282]]
+
+Seed: 7052024, Accuracy: 0.7623421354764638, F1: 0.781414994720169, Confusion Matrix: 
+[[294 149]
+ [ 58 370]]
+
+Arguments: {'seed': 7052024, 'epochs': 5, 'batch_size': 32, 'lr': 0.0001, 'clip': 1.0, 'log_interval': 100}

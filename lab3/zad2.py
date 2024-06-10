@@ -105,13 +105,13 @@ def main(args, run):
   criterion = nn.BCEWithLogitsLoss()
   optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
-  with open('results.txt', 'a') as f:
+  with open('lab3/results.txt', 'a') as f:
         f.write(f'Run {run + 1} with Seed {args.seed}\n')
         for epoch in range(args.epochs):
             train_loss = train(model, train_loader, optimizer, criterion, args)
             valid_loss, valid_accuracy, valid_f1, valid_cm = evaluate(model, valid_loader, criterion, args)
             print(f'Epoch {epoch + 1}, Train Loss: {train_loss}, Valid Loss: {valid_loss}, Valid Accuracy: {valid_accuracy}')
-            f.write(f'Epoch {epoch + 1}') 
+            f.write(f'Epoch {epoch + 1}\n') 
             f.write(f'Train Loss: {train_loss}, Valid Loss: {valid_loss}, Valid Accuracy: {valid_accuracy}, Valid F1: {valid_f1}\n')
             f.write(f'ValidConfusion Matrix:\n{valid_cm}\n\n')
     
@@ -128,7 +128,7 @@ if __name__=="__main__":
         results.append((args.seed, accuracy, f1, cm))
 
     # Save final test results to file
-    with open('results.txt', 'a') as f:
+    with open('lab3/results.txt', 'a') as f:
         f.write('Final Test Results:\n')
         for seed, accuracy, f1, cm in results:
             f.write(f'Seed: {seed}, Accuracy: {accuracy}, F1: {f1}, Confusion Matrix: \n{cm}\n\n')
