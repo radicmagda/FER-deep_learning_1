@@ -1,7 +1,8 @@
 import torch
 import numpy as np
 from torch import nn
-from zad1 import get_data_loaders_and_emb_mat, get_embedding_matrix
+import torch.nn.functional as F
+from zad1 import get_data_loaders_and_emb_mat
 
 class BaselineModel(nn.Module):
     def __init__(self, embedding_matrix, freeze=True, padding_idx=0):
@@ -13,23 +14,27 @@ class BaselineModel(nn.Module):
         self.fc2 = nn.Linear(150, 150)
         self.fc3 = nn.Linear(150, 1)
 
-    def forward(self, x, legths):
+    def forward(self, x, lengths):
        """
-       x -> (B, max_seq_length)
-       lengths -> (B)
+       x -> (B, max_seq_length) or (max_seq_length)
+       lengths -> (B,) or ()
 
        """
+       if len(x.shape) == 1:                   # u slucaju jednog inputa
+            x = x.unsqueeze(0)
+            lengths = lengths.unsqueeze(0)
+
        embedded_x=self.embedding(x)            #Shape: (B, max_seq_length ,embedding_dim)
        sum_embeddings = embedded_x.sum(dim=1)  # Shape: (B, embedding_dim)
        lengths = lengths.unsqueeze(-1).float()  # Shape: (B, 1)
        average_embeddings = sum_embeddings / lengths  # Shape: (B, embedding_dim)
        x=average_embeddings
        x = self.fc1(x)
-       x = self.relu(x)
+       x = F.relu(x)
        x = self.fc2(x)
-       x = self.relu(x)
+       x = F.relu(x)
        x = self.fc3(x)
-       return x
+       return x.flatten().squeeze()    # shape (B,) of batch, () of single input
 
 
 def train(model, data, optimizer, criterion, clip):
