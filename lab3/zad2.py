@@ -40,11 +40,11 @@ class BaselineModel(nn.Module):
        lengths = lengths.unsqueeze(-1).float()  # Shape: (B, 1)
        average_embeddings = sum_embeddings / lengths  # Shape: (B, embedding_dim)
        x=average_embeddings
-       x = self.fc1(x)
-       x = F.relu(x)
-       x = self.fc2(x)
-       x = F.relu(x)
-       x = self.fc3(x)
+       x = self.fc1(x)  #B,150
+       x = F.relu(x)    #B,150
+       x = self.fc2(x)  #B,150
+       x = F.relu(x)    #B,150
+       x = self.fc3(x)  #B,1
        return x.flatten().squeeze()    # shape (B,) of batch, () of single input
 
 

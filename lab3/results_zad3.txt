@@ -1,0 +1,26 @@
+Run 1 with Seed 42
+Epoch 1, Train Loss: 0.6030132338792258, Valid Loss: 0.521651870325992, Valid Accuracy: 0.7483516483516484, Valid F1: 0.763673890608875
+Confusion Matrix:
+[[622 286]
+ [172 740]]
+
+Epoch 2, Train Loss: 0.5041575618518915, Valid Loss: 0.512838889109461, Valid Accuracy: 0.7626373626373626, Valid F1: 0.7773195876288659
+Confusion Matrix:
+[[634 274]
+ [158 754]]
+
+Epoch 3, Train Loss: 0.46067976608140276, Valid Loss: 0.4749890356733088, Valid Accuracy: 0.7730769230769231, Valid F1: 0.7874420998455995
+Confusion Matrix:
+[[642 266]
+ [147 765]]
+
+Epoch 4, Train Loss: 0.43519585842342046, Valid Loss: 0.49911771061127647, Valid Accuracy: 0.7571428571428571, Valid F1: 0.7944186046511627
+Confusion Matrix:
+[[524 384]
+ [ 58 854]]
+
+Epoch 5, Train Loss: 0.4125794401080105, Valid Loss: 0.4579525093237559, Valid Accuracy: 0.7862637362637362, Valid F1: 0.8018339276617421
+Confusion Matrix:
+[[644 264]
+ [125 787]]
+
