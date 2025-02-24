@@ -1,2 +1,2 @@
-# FER-duboko_ucenje
-solutions to assignments for the course Deep Learning 1 on FER
+# FER - Deep Learning 1
+solutions to assignments for the course [Deep Learning 1](https://www.fer.unizg.hr/predmet/dubuce1_a) on FER
